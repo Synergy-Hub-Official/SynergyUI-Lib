@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SynergyUI • Documentation</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@500&amp;display=swap');
@@ -27,7 +27,6 @@
             line-height: 1.6;
         }
         
-        /* Starry background */
         .stars {
             position: fixed;
             top: 0;
@@ -138,7 +137,7 @@
         }
         
         .hero p {
-            font-size: 22px;
+            font-size: clamp(18px, 4vw, 22px);
             color: #aaaaaa;
             margin-bottom: 40px;
             max-width: 620px;
@@ -195,7 +194,7 @@
         
         .section-header h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
+            font-size: clamp(32px, 5vw, 42px);
             color: #fff;
         }
         
@@ -223,7 +222,7 @@
         
         .control-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 24px;
         }
         
@@ -293,6 +292,45 @@
             font-weight: 500;
         }
         
+        /* MOBILE FIXES */
+        @media (max-width: 768px) {
+            header {
+                padding: 14px 5%;
+            }
+            nav ul {
+                gap: 16px;
+                font-size: 14px;
+            }
+            section {
+                padding: 80px 5% 70px;
+            }
+            .card {
+                padding: 24px;
+            }
+            .code-block {
+                font-size: 14px;
+                padding: 16px;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding-top: 70px;
+            }
+            .floating-next {
+                bottom: 20px;
+                right: 20px;
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+            }
+        }
+        
         .toc {
             position: sticky;
             top: 100px;
@@ -319,11 +357,9 @@
     </style>
 </head>
 <body>
-    <!-- Star canvas -->
     <canvas id="stars-canvas" class="canvas-stars"></canvas>
     <div class="stars"></div>
 
-    <!-- Navbar -->
     <header>
         <div class="logo">SynergyUI</div>
         
@@ -345,7 +381,6 @@
         </a>
     </header>
 
-    <!-- HERO -->
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>SynergyUI</h1>
@@ -360,7 +395,6 @@
         </div>
     </section>
 
-    <!-- GETTING STARTED -->
     <section id="getting-started">
         <div class="section-header">
             <div class="dot"></div>
@@ -387,13 +421,8 @@
 })</code></pre>
             </div>
         </div>
-        
-        <div style="text-align:center; margin:60px 0; font-size:15px; color:#666;">
-            Scroll down for a complete working example →
-        </div>
     </section>
 
-    <!-- FULL EXAMPLE -->
     <section id="full-example" style="background:#0a0a0a;">
         <div class="section-header">
             <div class="dot"></div>
@@ -418,12 +447,10 @@ local window = SynergyUI:CreateWindow({
     EnableCtrlTab = true
 })
 
--- Create tabs
 local mainTab = window:CreateTab("Main")
 local movementTab = window:CreateTab("Movement")
 local visualsTab = window:CreateTab("Visuals")
 
--- === MAIN TAB ===
 local els = mainTab
 
 els:CreateSection("General")
@@ -449,7 +476,6 @@ els:CreateButton({
 
 els:CreateSeparator()
 
--- === MOVEMENT TAB ===
 els = movementTab
 
 els:CreateSection("Movement Options")
@@ -494,7 +520,6 @@ els:CreateChecklist({
     end
 })
 
--- === VISUALS TAB ===
 els = visualsTab
 
 els:CreateSection("Visual Settings")
@@ -536,7 +561,6 @@ els:CreateKeybind({
     end
 })
 
--- Final notification when loaded
 SynergyUI:Notify("SynergyUI loaded successfully!", 4, Color3.fromRGB(0, 255, 100), "TopRight")
 </code></pre>
             </div>
@@ -545,7 +569,6 @@ SynergyUI:Notify("SynergyUI loaded successfully!", 4, Color3.fromRGB(0, 255, 100
         <p style="text-align:center; color:#666; font-size:14px;">This script creates a fully working UI with tabs, every control type, config saving, notifications, and keyboard toggle.</p>
     </section>
 
-    <!-- WINDOW CREATION -->
     <section id="window">
         <div class="section-header">
             <div class="dot"></div>
@@ -554,23 +577,24 @@ SynergyUI:Notify("SynergyUI loaded successfully!", 4, Color3.fromRGB(0, 255, 100
         
         <div class="card">
             <h3 style="margin-bottom:12px;">SynergyUI:CreateWindow(options)</h3>
-            <table>
-                <tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr>
-                <tr><td>Title</td><td>string</td><td>"Synergy Hub"</td><td>Window title shown in top bar</td></tr>
-                <tr><td>AccentColor</td><td>Color3</td><td>Color3.fromRGB(0,255,100)</td><td>Main theme color</td></tr>
-                <tr><td>BackgroundColor</td><td>Color3</td><td>Color3.fromRGB(15,15,15)</td><td>Background of main frame</td></tr>
-                <tr><td>SidebarColor</td><td>Color3</td><td>Color3.fromRGB(20,20,20)</td><td>Sidebar and top bar color</td></tr>
-                <tr><td>ConfigFile</td><td>string</td><td>""</td><td>Filename for automatic save/load (uses writefile/readfile)</td></tr>
-                <tr><td>ToggleKey</td><td>Enum.KeyCode</td><td>RightShift</td><td>Key to show/hide the UI</td></tr>
-                <tr><td>EnableCtrlTab</td><td>boolean</td><td>false</td><td>Enable Ctrl+Tab to cycle tabs</td></tr>
-                <tr><td>CloseOnEscape</td><td>boolean</td><td>false</td><td>Close window when Escape is pressed</td></tr>
-                <tr><td>Font</td><td>Enum.Font</td><td>Gotham</td><td>Global font</td></tr>
-                <tr><td>CornerRadius</td><td>number</td><td>6</td><td>Global corner radius in pixels</td></tr>
-            </table>
+            <div style="overflow-x:auto;">
+                <table>
+                    <tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                    <tr><td>Title</td><td>string</td><td>"Synergy Hub"</td><td>Window title shown in top bar</td></tr>
+                    <tr><td>AccentColor</td><td>Color3</td><td>Color3.fromRGB(0,255,100)</td><td>Main theme color</td></tr>
+                    <tr><td>BackgroundColor</td><td>Color3</td><td>Color3.fromRGB(15,15,15)</td><td>Background of main frame</td></tr>
+                    <tr><td>SidebarColor</td><td>Color3</td><td>Color3.fromRGB(20,20,20)</td><td>Sidebar and top bar color</td></tr>
+                    <tr><td>ConfigFile</td><td>string</td><td>""</td><td>Filename for automatic save/load (uses writefile/readfile)</td></tr>
+                    <tr><td>ToggleKey</td><td>Enum.KeyCode</td><td>RightShift</td><td>Key to show/hide the UI</td></tr>
+                    <tr><td>EnableCtrlTab</td><td>boolean</td><td>false</td><td>Enable Ctrl+Tab to cycle tabs</td></tr>
+                    <tr><td>CloseOnEscape</td><td>boolean</td><td>false</td><td>Close window when Escape is pressed</td></tr>
+                    <tr><td>Font</td><td>Enum.Font</td><td>Gotham</td><td>Global font</td></tr>
+                    <tr><td>CornerRadius</td><td>number</td><td>6</td><td>Global corner radius in pixels</td></tr>
+                </table>
+            </div>
         </div>
     </section>
 
-    <!-- TABS -->
     <section id="tabs">
         <div class="section-header">
             <div class="dot"></div>
@@ -582,13 +606,12 @@ SynergyUI:Notify("SynergyUI loaded successfully!", 4, Color3.fromRGB(0, 255, 100
             <div class="code-block" style="margin:20px 0">
                 <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                 <pre><code>local mainTab = window:CreateTab("Main")
-local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- optional icon</code></pre>
+local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789")</code></pre>
             </div>
-            <p>Each tab returns an <strong>elements</strong> table containing all control creation functions.</p>
+            <p>Each tab returns an elements table containing all control creation functions.</p>
         </div>
     </section>
 
-    <!-- CONTROLS REFERENCE -->
     <section id="controls">
         <div class="section-header">
             <div class="dot"></div>
@@ -596,154 +619,142 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
         </div>
         
         <div class="control-grid">
-            
-            <!-- Button -->
             <div class="card">
                 <h3 style="color:#00ff64">Button</h3>
                 <p>Simple clickable button with optional tooltip.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateButton({<br>
-&nbsp;&nbsp;Name = "Click Me",<br>
-&nbsp;&nbsp;Callback = function() ... end,<br>
-&nbsp;&nbsp;Tooltip = "Optional description"<br>
-})
+                    <pre><code>els:CreateButton({
+    Name = "Click Me",
+    Callback = function() ... end,
+    Tooltip = "Optional description"
+})</code></pre>
                 </div>
             </div>
             
-            <!-- Toggle -->
             <div class="card">
                 <h3 style="color:#00ff64">Toggle</h3>
                 <p>On/off switch with state saving.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateToggle({<br>
-&nbsp;&nbsp;Name = "Toggle Name",<br>
-&nbsp;&nbsp;CurrentValue = false,<br>
-&nbsp;&nbsp;Flag = "MyFlag",<br>
-&nbsp;&nbsp;Callback = function(state) ... end<br>
-})
+                    <pre><code>els:CreateToggle({
+    Name = "Toggle Name",
+    CurrentValue = false,
+    Flag = "MyFlag",
+    Callback = function(state) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- Slider -->
             <div class="card">
                 <h3 style="color:#00ff64">Slider</h3>
                 <p>Number slider with optional number input box.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateSlider({<br>
-&nbsp;&nbsp;Name = "Speed",<br>
-&nbsp;&nbsp;Range = {16, 250},<br>
-&nbsp;&nbsp;Increment = 1,<br>
-&nbsp;&nbsp;CurrentValue = 50,<br>
-&nbsp;&nbsp;Callback = function(v) ... end<br>
-})
+                    <pre><code>els:CreateSlider({
+    Name = "Speed",
+    Range = {16, 250},
+    Increment = 1,
+    CurrentValue = 50,
+    Callback = function(v) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- Dropdown -->
             <div class="card">
                 <h3 style="color:#00ff64">Dropdown</h3>
                 <p>Expandable list selector.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateDropdown({<br>
-&nbsp;&nbsp;Name = "Mode",<br>
-&nbsp;&nbsp;Options = {"Option1", "Option2"},<br>
-&nbsp;&nbsp;CurrentOption = "Option1",<br>
-&nbsp;&nbsp;Callback = function(opt) ... end<br>
-})
+                    <pre><code>els:CreateDropdown({
+    Name = "Mode",
+    Options = {"Option1", "Option2"},
+    CurrentOption = "Option1",
+    Callback = function(opt) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- Checklist -->
             <div class="card">
                 <h3 style="color:#00ff64">Checklist</h3>
                 <p>Multi-select checklist with count display.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateChecklist({<br>
-&nbsp;&nbsp;Name = "Features",<br>
-&nbsp;&nbsp;Options = {"A", "B", "C"},<br>
-&nbsp;&nbsp;CurrentSelected = {"A"},<br>
-&nbsp;&nbsp;Callback = function(tbl) ... end<br>
-})
+                    <pre><code>els:CreateChecklist({
+    Name = "Features",
+    Options = {"A", "B", "C"},
+    CurrentSelected = {"A"},
+    Callback = function(tbl) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- TextInput -->
             <div class="card">
                 <h3 style="color:#00ff64">Text Input</h3>
                 <p>Free text field.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateTextInput({<br>
-&nbsp;&nbsp;Name = "Message",<br>
-&nbsp;&nbsp;CurrentText = "Hello",<br>
-&nbsp;&nbsp;Callback = function(text) ... end<br>
-})
+                    <pre><code>els:CreateTextInput({
+    Name = "Message",
+    CurrentText = "Hello",
+    Callback = function(text) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- NumberInput -->
             <div class="card">
                 <h3 style="color:#00ff64">Number Input</h3>
                 <p>Validated numeric input.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateNumberInput({<br>
-&nbsp;&nbsp;Name = "Value",<br>
-&nbsp;&nbsp;CurrentValue = 100,<br>
-&nbsp;&nbsp;Callback = function(num) ... end<br>
-})
+                    <pre><code>els:CreateNumberInput({
+    Name = "Value",
+    CurrentValue = 100,
+    Callback = function(num) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- Keybind -->
             <div class="card">
                 <h3 style="color:#00ff64">Keybind</h3>
                 <p>Click to set any key (supports mouse buttons).</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateKeybind({<br>
-&nbsp;&nbsp;Name = "Trigger",<br>
-&nbsp;&nbsp;CurrentKeybind = "F",<br>
-&nbsp;&nbsp;Callback = function(key) ... end<br>
-})
+                    <pre><code>els:CreateKeybind({
+    Name = "Trigger",
+    CurrentKeybind = "F",
+    Callback = function(key) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- ColorPicker -->
             <div class="card">
                 <h3 style="color:#00ff64">Color Picker</h3>
                 <p>RGB sliders with live preview.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateColorPicker({<br>
-&nbsp;&nbsp;Name = "Color",<br>
-&nbsp;&nbsp;Color = Color3.fromRGB(255,100,100),<br>
-&nbsp;&nbsp;Callback = function(c) ... end<br>
-})
+                    <pre><code>els:CreateColorPicker({
+    Name = "Color",
+    Color = Color3.fromRGB(255,100,100),
+    Callback = function(c) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- RadioGroup -->
             <div class="card">
                 <h3 style="color:#00ff64">Radio Group</h3>
                 <p>Single-select radio buttons.</p>
                 <div class="code-block" style="font-size:13px;margin-top:16px;">
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    els:CreateRadioGroup({<br>
-&nbsp;&nbsp;Name = "Choice",<br>
-&nbsp;&nbsp;Options = {"One", "Two"},<br>
-&nbsp;&nbsp;CurrentValue = "One",<br>
-&nbsp;&nbsp;Callback = function(v) ... end<br>
-})
+                    <pre><code>els:CreateRadioGroup({
+    Name = "Choice",
+    Options = {"One", "Two"},
+    CurrentValue = "One",
+    Callback = function(v) ... end
+})</code></pre>
                 </div>
             </div>
             
-            <!-- Extra utilities -->
             <div class="card">
                 <h3 style="color:#00ff64">Utilities</h3>
                 <ul style="padding-left:20px;">
@@ -756,7 +767,6 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
         </div>
     </section>
 
-    <!-- ADVANCED FEATURES -->
     <section id="advanced">
         <div class="section-header">
             <div class="dot"></div>
@@ -767,16 +777,16 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
             <h3>Notifications</h3>
             <div class="code-block">
                 <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                SynergyUI:Notify("Message here", duration, Color3, position)<br>
-                -- position: "TopRight", "TopLeft", "BottomRight", "BottomLeft"
+                <pre><code>SynergyUI:Notify("Message here", duration, Color3, position)
+-- position: "TopRight", "TopLeft", "BottomRight", "BottomLeft"</code></pre>
             </div>
             
             <h3 style="margin-top:32px;">Config System</h3>
             <p>Automatically saves position, size, accent, theme values, and all control states when ConfigFile is provided.</p>
             <div class="code-block">
                 <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                window:SaveConfig("custom.json")<br>
-                window:LoadConfig("custom.json")
+                <pre><code>window:SaveConfig("custom.json")
+window:LoadConfig("custom.json")</code></pre>
             </div>
             
             <h3 style="margin-top:32px;">Programmatic Control Access</h3>
@@ -784,19 +794,16 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer style="background:#050505; padding:60px 5%; text-align:center; border-top:1px solid #222; color:#555; font-size:14px;">
         SynergyUI Documentation • Built as a single-file reference<br>
         All code examples are production-ready and tested against the official library.
     </footer>
 
-    <!-- Floating next button -->
     <div class="floating-next" onclick="nextSection()" title="Next Section">
         →
     </div>
 
     <script>
-        // Canvas stars animation
         function createStars() {
             const canvas = document.getElementById('stars-canvas')
             const ctx = canvas.getContext('2d')
@@ -827,7 +834,6 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
                     ctx.globalAlpha = alpha
                     ctx.fillRect(star.x, star.y, star.size, star.size)
                     
-                    // occasional bigger glow
                     if (Math.random() > 0.97) {
                         ctx.globalAlpha = 0.25
                         ctx.fillRect(star.x - 1, star.y - 1, star.size + 2, star.size + 2)
@@ -839,7 +845,6 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
             draw()
         }
         
-        // Copy functions
         function copyCode(btn) {
             const pre = btn.parentElement.querySelector('pre')
             const text = pre.textContent
@@ -867,7 +872,6 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
         }
         
         function copyFullExample() {
-            // The full example script is already in the DOM, we extract it
             const pre = document.querySelector('#full-example pre')
             navigator.clipboard.writeText(pre.textContent).then(() => {
                 const btns = document.querySelectorAll('.copy-btn')
@@ -882,7 +886,6 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
             })
         }
         
-        // Smooth scroll to next section
         let sectionOrder = [
             '#getting-started',
             '#full-example',
@@ -908,12 +911,10 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
             if (nextEl) {
                 nextEl.scrollIntoView({ behavior: 'smooth' })
             } else {
-                // loop back to top
                 document.getElementById('home').scrollIntoView({ behavior: 'smooth' })
             }
         }
         
-        // Active nav highlight
         function highlightNav() {
             const links = document.querySelectorAll('nav a')
             const sections = document.querySelectorAll('section[id]')
@@ -937,12 +938,9 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789") -- op
             })
         }
         
-        // Init everything
         window.onload = function() {
             createStars()
             highlightNav()
-            
-            console.log('%c✅ SynergyUI Documentation loaded successfully', 'color:#00ff64; font-family:monospace')
         }
     </script>
 </body>
