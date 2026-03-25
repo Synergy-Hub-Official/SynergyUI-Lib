@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SynergyUI • Documentation</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@500&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500&display=swap');
         
         :root {
             --green: #00ff64;
@@ -20,11 +20,14 @@
         }
         
         body {
-            font-family: 'Inter', system_ui, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background: #0a0a0a;
             color: #e0e0e0;
             overflow-x: hidden;
             line-height: 1.6;
+            width: 100%;
+            max-width: 100%;
+            touch-action: pan-y pinch-zoom; /* allow vertical scroll, disable horizontal swipe inertia */
         }
         
         .stars {
@@ -67,15 +70,17 @@
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(0, 255, 100, 0.15);
             z-index: 1000;
-            padding: 16px 5%;
+            padding: 14px 5%;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
         
         .logo {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 500;
             color: #00ff64;
             letter-spacing: -1px;
@@ -87,8 +92,8 @@
         .logo::before {
             content: '';
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: #00ff64;
             border-radius: 50%;
             box-shadow: 0 0 12px #00ff64;
@@ -97,7 +102,8 @@
         nav ul {
             display: flex;
             list-style: none;
-            gap: 32px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
         
         nav a {
@@ -105,6 +111,7 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            font-size: 14px;
         }
         
         nav a:hover {
@@ -123,12 +130,13 @@
         
         .hero-content {
             max-width: 860px;
+            width: 100%;
             padding: 0 20px;
         }
         
         .hero h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(42px, 6vw, 68px);
+            font-size: clamp(38px, 6vw, 68px);
             line-height: 1.1;
             margin-bottom: 16px;
             background: linear-gradient(90deg, #fff, #00ff64);
@@ -137,7 +145,7 @@
         }
         
         .hero p {
-            font-size: clamp(18px, 4vw, 22px);
+            font-size: clamp(16px, 4vw, 22px);
             color: #aaaaaa;
             margin-bottom: 40px;
             max-width: 620px;
@@ -149,29 +157,36 @@
             background: #111111;
             border: 1px solid #00ff64;
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px;
             font-family: 'Space Grotesk', monospace;
-            font-size: 15px;
+            font-size: 14px;
             color: #00ff64;
             text-align: left;
             max-width: 720px;
+            width: 100%;
             margin: 40px auto 0;
             box-shadow: 0 0 30px rgba(0, 255, 100, 0.2);
             position: relative;
+            overflow-x: auto;
+        }
+        
+        .code-hero pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: inherit;
+            font-size: 14px;
         }
         
         .copy-btn {
-            position: absolute;
-            top: 16px;
-            right: 16px;
             background: #222;
             color: #00ff64;
             border: none;
             padding: 6px 14px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
+            font-weight: 500;
         }
         
         .copy-btn:hover {
@@ -180,9 +195,10 @@
         }
         
         section {
-            padding: 110px 5% 90px;
+            padding: 100px 5% 80px;
             max-width: 1280px;
             margin: 0 auto;
+            width: 100%;
         }
         
         .section-header {
@@ -194,7 +210,7 @@
         
         .section-header h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(32px, 5vw, 42px);
+            font-size: clamp(28px, 5vw, 42px);
             color: #fff;
         }
         
@@ -209,10 +225,12 @@
         .card {
             background: #111111;
             border-radius: 16px;
-            padding: 32px;
+            padding: 28px;
             border: 1px solid rgba(0, 255, 100, 0.15);
             margin-bottom: 32px;
             transition: transform 0.3s, border-color 0.3s;
+            width: 100%;
+            overflow-x: auto;
         }
         
         .card:hover {
@@ -222,55 +240,64 @@
         
         .control-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 24px;
         }
         
         .code-block {
             background: #0a0a0a;
             border-radius: 12px;
-            padding: 20px;
+            padding: 18px;
             font-family: ui-monospace, monospace;
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.5;
             color: #ddd;
             position: relative;
             border: 1px solid #222;
             overflow-x: auto;
-            white-space: pre;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        .code-block pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: inherit;
         }
         
         .example-container {
             border: 2px dashed #00ff64;
             border-radius: 16px;
-            padding: 40px;
+            padding: 24px;
             background: linear-gradient(180deg, #111111, #0a0a0a);
             margin: 40px 0;
+            width: 100%;
+            overflow-x: auto;
         }
         
         .floating-next {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 24px;
+            right: 24px;
             background: rgba(0, 255, 100, 0.1);
             border: 2px solid #00ff64;
             color: #00ff64;
-            width: 56px;
-            height: 56px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 26px;
             cursor: pointer;
             box-shadow: 0 0 25px rgba(0, 255, 100, 0.4);
             z-index: 9999;
             transition: all 0.3s;
-            opacity: 0.85;
+            opacity: 0.9;
         }
         
         .floating-next:hover {
-            transform: scale(1.1);
+            transform: scale(1.08);
             opacity: 1;
         }
         
@@ -278,12 +305,14 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            min-width: 500px;
         }
         
         th, td {
-            padding: 14px 20px;
+            padding: 12px 16px;
             text-align: left;
             border-bottom: 1px solid #222;
+            font-size: 14px;
         }
         
         th {
@@ -292,42 +321,55 @@
             font-weight: 500;
         }
         
-        /* MOBILE FIXES */
+        .table-wrapper {
+            overflow-x: auto;
+            width: 100%;
+            margin: 16px 0;
+        }
+        
         @media (max-width: 768px) {
             header {
-                padding: 14px 5%;
+                padding: 12px 5%;
+                gap: 8px;
+            }
+            .logo {
+                font-size: 22px;
             }
             nav ul {
-                gap: 16px;
-                font-size: 14px;
+                gap: 12px;
+            }
+            nav a {
+                font-size: 12px;
             }
             section {
-                padding: 80px 5% 70px;
+                padding: 80px 5% 60px;
             }
             .card {
-                padding: 24px;
+                padding: 20px;
             }
             .code-block {
-                font-size: 14px;
-                padding: 16px;
-            }
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-            .control-grid {
-                grid-template-columns: 1fr;
+                font-size: 12px;
+                padding: 14px;
             }
             .hero {
                 padding-top: 70px;
             }
             .floating-next {
-                bottom: 20px;
-                right: 20px;
-                width: 48px;
-                height: 48px;
-                font-size: 24px;
+                bottom: 18px;
+                right: 18px;
+                width: 44px;
+                height: 44px;
+                font-size: 22px;
+            }
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-header {
+                margin-bottom: 32px;
+            }
+            th, td {
+                padding: 10px 12px;
+                font-size: 12px;
             }
         }
         
@@ -354,6 +396,24 @@
             background: rgba(0,255,100,.15);
             color: #00ff64;
         }
+        
+        footer {
+            background: #050505;
+            padding: 50px 5%;
+            text-align: center;
+            border-top: 1px solid #222;
+            color: #555;
+            font-size: 13px;
+            width: 100%;
+        }
+        
+        img, svg {
+            max-width: 100%;
+        }
+        
+        a[href*="github"] {
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -362,22 +422,20 @@
 
     <header>
         <div class="logo">SynergyUI</div>
-        
         <nav>
             <ul>
                 <li><a href="#getting-started">Getting Started</a></li>
-                <li><a href="#window">Window Creation</a></li>
+                <li><a href="#window">Window</a></li>
                 <li><a href="#tabs">Tabs</a></li>
                 <li><a href="#controls">Controls</a></li>
                 <li><a href="#full-example">Full Example</a></li>
-                <li><a href="#advanced">Advanced Features</a></li>
+                <li><a href="#advanced">Advanced</a></li>
             </ul>
         </nav>
-        
         <a href="https://github.com/Synergy-Hub-Official/Scripts" target="_blank" 
-           style="color:#00ff64; text-decoration:none; font-size:15px; display:flex; align-items:center; gap:6px;">
-            <span>View on GitHub</span>
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.09.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.56 9.56 0 0112 6.844c.85.004 1.705.115 2.504.337 1.91-1.294 2.75-1.026 2.75-1.026.545 1.377.203 2.394.1 2.647.64.698 1.026 1.59 1.026 2.682 0 3.841-2.337 4.687-4.565 4.935.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.004 10.004 0 0022 12c0-5.523-4.477-10-10-10z"/></svg>
+           style="color:#00ff64; text-decoration:none; font-size:13px; display:flex; align-items:center; gap:5px;">
+            <span>GitHub</span>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.09.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.56 9.56 0 0112 6.844c.85.004 1.705.115 2.504.337 1.91-1.294 2.75-1.026 2.75-1.026.545 1.377.203 2.394.1 2.647.64.698 1.026 1.59 1.026 2.682 0 3.841-2.337 4.687-4.565 4.935.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.004 10.004 0 0022 12c0-5.523-4.477-10-10-10z"/></svg>
         </a>
     </header>
 
@@ -385,13 +443,11 @@
         <div class="hero-content">
             <h1>SynergyUI</h1>
             <p>A clean, modern, and fully-featured UI library for Roblox. Built for performance, customization, and ease of use.</p>
-            
             <div class="code-hero" id="hero-code">
-                <button class="copy-btn" onclick="copyHeroCode()">Copy</button>
+                <button class="copy-btn" onclick="copyHeroCode()" style="position: absolute; top: 12px; right: 12px;">Copy</button>
                 <pre><code>local SynergyUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Synergy-Hub-Official/Scripts/refs/heads/main/SynergyUI.lua"))()</code></pre>
             </div>
-            
-            <p style="margin-top: 32px; font-size: 15px; color: #666;">One-line installation • Zero dependencies • Full config saving</p>
+            <p style="margin-top: 28px; font-size: 14px; color: #666;">One-line installation • Zero dependencies • Full config saving</p>
         </div>
     </section>
 
@@ -400,19 +456,16 @@
             <div class="dot"></div>
             <h2>Getting Started</h2>
         </div>
-        
         <div class="card">
             <h3 style="color:#00ff64; margin-bottom:16px;">1. Load the Library</h3>
             <div class="code-block" style="margin-bottom:24px;">
-                <button class="copy-btn" onclick="copyCode(this)" style="top:12px;right:12px;">Copy</button>
+                <button class="copy-btn" onclick="copyCode(this)" style="float: right;">Copy</button>
                 <pre><code>local SynergyUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Synergy-Hub-Official/Scripts/refs/heads/main/SynergyUI.lua"))()</code></pre>
             </div>
-            
             <p>The library is hosted on GitHub and can be loaded directly into any Roblox script (LocalScript recommended).</p>
-            
             <h3 style="color:#00ff64; margin: 32px 0 16px;">2. Create Your First Window</h3>
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)" style="top:12px;right:12px;">Copy</button>
+                <button class="copy-btn" onclick="copyCode(this)" style="float: right;">Copy</button>
                 <pre><code>local window = SynergyUI:CreateWindow({
     Title = "My Hub",
     AccentColor = Color3.fromRGB(0, 255, 100),
@@ -428,12 +481,10 @@
             <div class="dot"></div>
             <h2>Complete Working Example</h2>
         </div>
-        
         <p style="max-width:760px; margin-bottom:24px;">Here is a fully functional script that demonstrates every major feature of SynergyUI. Copy and run it in Studio to see it live.</p>
-        
         <div class="example-container">
             <div class="code-block" style="max-height:620px; overflow:auto;">
-                <button class="copy-btn" onclick="copyFullExample()" style="top:16px;right:16px;">Copy Full Script</button>
+                <button class="copy-btn" onclick="copyFullExample()" style="float: right;">Copy Full Script</button>
                 <pre><code>-- SynergyUI Full Example Script
 local SynergyUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Synergy-Hub-Official/Scripts/refs/heads/main/SynergyUI.lua"))()
 
@@ -561,12 +612,10 @@ els:CreateKeybind({
     end
 })
 
-SynergyUI:Notify("SynergyUI loaded successfully!", 4, Color3.fromRGB(0, 255, 100), "TopRight")
-</code></pre>
+SynergyUI:Notify("SynergyUI loaded successfully!", 4, Color3.fromRGB(0, 255, 100), "TopRight")</code></pre>
             </div>
         </div>
-        
-        <p style="text-align:center; color:#666; font-size:14px;">This script creates a fully working UI with tabs, every control type, config saving, notifications, and keyboard toggle.</p>
+        <p style="text-align:center; color:#666; font-size:13px;">This script creates a fully working UI with tabs, every control type, config saving, notifications, and keyboard toggle.</p>
     </section>
 
     <section id="window">
@@ -574,22 +623,21 @@ SynergyUI:Notify("SynergyUI loaded successfully!", 4, Color3.fromRGB(0, 255, 100
             <div class="dot"></div>
             <h2>Window Creation</h2>
         </div>
-        
         <div class="card">
             <h3 style="margin-bottom:12px;">SynergyUI:CreateWindow(options)</h3>
-            <div style="overflow-x:auto;">
+            <div class="table-wrapper">
                 <table>
                     <tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr>
                     <tr><td>Title</td><td>string</td><td>"Synergy Hub"</td><td>Window title shown in top bar</td></tr>
                     <tr><td>AccentColor</td><td>Color3</td><td>Color3.fromRGB(0,255,100)</td><td>Main theme color</td></tr>
                     <tr><td>BackgroundColor</td><td>Color3</td><td>Color3.fromRGB(15,15,15)</td><td>Background of main frame</td></tr>
                     <tr><td>SidebarColor</td><td>Color3</td><td>Color3.fromRGB(20,20,20)</td><td>Sidebar and top bar color</td></tr>
-                    <tr><td>ConfigFile</td><td>string</td><td>""</td><td>Filename for automatic save/load (uses writefile/readfile)</td></tr>
+                    <tr><td>ConfigFile</td><td>string</td><td>""</td><td>Filename for automatic save/load</td></tr>
                     <tr><td>ToggleKey</td><td>Enum.KeyCode</td><td>RightShift</td><td>Key to show/hide the UI</td></tr>
                     <tr><td>EnableCtrlTab</td><td>boolean</td><td>false</td><td>Enable Ctrl+Tab to cycle tabs</td></tr>
                     <tr><td>CloseOnEscape</td><td>boolean</td><td>false</td><td>Close window when Escape is pressed</td></tr>
                     <tr><td>Font</td><td>Enum.Font</td><td>Gotham</td><td>Global font</td></tr>
-                    <tr><td>CornerRadius</td><td>number</td><td>6</td><td>Global corner radius in pixels</td></tr>
+                    <tr><td>CornerRadius</td><td>number</td><td>6</td><td>Global corner radius</td></tr>
                 </table>
             </div>
         </div>
@@ -600,7 +648,6 @@ SynergyUI:Notify("SynergyUI loaded successfully!", 4, Color3.fromRGB(0, 255, 100
             <div class="dot"></div>
             <h2>Tabs</h2>
         </div>
-        
         <div class="card">
             <p><strong>window:CreateTab(name, iconUrl)</strong></p>
             <div class="code-block" style="margin:20px 0">
@@ -617,153 +664,18 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789")</code
             <div class="dot"></div>
             <h2>Controls Reference</h2>
         </div>
-        
         <div class="control-grid">
-            <div class="card">
-                <h3 style="color:#00ff64">Button</h3>
-                <p>Simple clickable button with optional tooltip.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateButton({
-    Name = "Click Me",
-    Callback = function() ... end,
-    Tooltip = "Optional description"
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Toggle</h3>
-                <p>On/off switch with state saving.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateToggle({
-    Name = "Toggle Name",
-    CurrentValue = false,
-    Flag = "MyFlag",
-    Callback = function(state) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Slider</h3>
-                <p>Number slider with optional number input box.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateSlider({
-    Name = "Speed",
-    Range = {16, 250},
-    Increment = 1,
-    CurrentValue = 50,
-    Callback = function(v) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Dropdown</h3>
-                <p>Expandable list selector.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateDropdown({
-    Name = "Mode",
-    Options = {"Option1", "Option2"},
-    CurrentOption = "Option1",
-    Callback = function(opt) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Checklist</h3>
-                <p>Multi-select checklist with count display.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateChecklist({
-    Name = "Features",
-    Options = {"A", "B", "C"},
-    CurrentSelected = {"A"},
-    Callback = function(tbl) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Text Input</h3>
-                <p>Free text field.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateTextInput({
-    Name = "Message",
-    CurrentText = "Hello",
-    Callback = function(text) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Number Input</h3>
-                <p>Validated numeric input.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateNumberInput({
-    Name = "Value",
-    CurrentValue = 100,
-    Callback = function(num) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Keybind</h3>
-                <p>Click to set any key (supports mouse buttons).</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateKeybind({
-    Name = "Trigger",
-    CurrentKeybind = "F",
-    Callback = function(key) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Color Picker</h3>
-                <p>RGB sliders with live preview.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateColorPicker({
-    Name = "Color",
-    Color = Color3.fromRGB(255,100,100),
-    Callback = function(c) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Radio Group</h3>
-                <p>Single-select radio buttons.</p>
-                <div class="code-block" style="font-size:13px;margin-top:16px;">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    <pre><code>els:CreateRadioGroup({
-    Name = "Choice",
-    Options = {"One", "Two"},
-    CurrentValue = "One",
-    Callback = function(v) ... end
-})</code></pre>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 style="color:#00ff64">Utilities</h3>
-                <ul style="padding-left:20px;">
-                    <li><strong>els:CreateLabel(text)</strong> – Simple label</li>
-                    <li><strong>els:CreateSeparator()</strong> – Horizontal divider</li>
-                    <li><strong>els:CreateSection(name)</strong> – Bold section header</li>
-                    <li><strong>els:CreateParagraph({Title = "...", Content = "...", Image = "rbxassetid://..."})</strong> – Rich text + optional image</li>
-                </ul>
-            </div>
+            <div class="card"><h3 style="color:#00ff64">Button</h3><p>Simple clickable button with optional tooltip.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateButton({ Name = "Click Me", Callback = function() end, Tooltip = "Optional" })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Toggle</h3><p>On/off switch with state saving.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateToggle({ Name = "Toggle", CurrentValue = false, Flag = "MyFlag", Callback = function(s) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Slider</h3><p>Number slider with optional input box.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateSlider({ Name = "Speed", Range = {16,250}, Increment = 1, CurrentValue = 50, Callback = function(v) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Dropdown</h3><p>Expandable list selector.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateDropdown({ Name = "Mode", Options = {"A","B"}, CurrentOption = "A", Callback = function(opt) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Checklist</h3><p>Multi-select checklist.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateChecklist({ Name = "Features", Options = {"X","Y"}, CurrentSelected = {"X"}, Callback = function(t) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Text Input</h3><p>Free text field.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateTextInput({ Name = "Message", CurrentText = "Hello", Callback = function(t) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Number Input</h3><p>Validated numeric input.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateNumberInput({ Name = "Value", CurrentValue = 100, Callback = function(n) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Keybind</h3><p>Click to set any key.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateKeybind({ Name = "Trigger", CurrentKeybind = "F", Callback = function(k) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Color Picker</h3><p>RGB sliders with preview.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateColorPicker({ Name = "Color", Color = Color3.new(1,0,0), Callback = function(c) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Radio Group</h3><p>Single-select radio buttons.</p><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>els:CreateRadioGroup({ Name = "Choice", Options = {"One","Two"}, CurrentValue = "One", Callback = function(v) end })</code></pre></div></div>
+            <div class="card"><h3 style="color:#00ff64">Utilities</h3><ul style="padding-left:20px;"><li><strong>els:CreateLabel(text)</strong></li><li><strong>els:CreateSeparator()</strong></li><li><strong>els:CreateSection(name)</strong></li><li><strong>els:CreateParagraph({Title, Content, Image})</strong></li></ul></div>
         </div>
     </section>
 
@@ -772,176 +684,153 @@ local settingsTab = window:CreateTab("Settings", "rbxassetid://123456789")</code
             <div class="dot"></div>
             <h2>Advanced Features</h2>
         </div>
-        
         <div class="card">
             <h3>Notifications</h3>
-            <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code>SynergyUI:Notify("Message here", duration, Color3, position)
--- position: "TopRight", "TopLeft", "BottomRight", "BottomLeft"</code></pre>
-            </div>
-            
-            <h3 style="margin-top:32px;">Config System</h3>
-            <p>Automatically saves position, size, accent, theme values, and all control states when ConfigFile is provided.</p>
-            <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code>window:SaveConfig("custom.json")
-window:LoadConfig("custom.json")</code></pre>
-            </div>
-            
-            <h3 style="margin-top:32px;">Programmatic Control Access</h3>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>SynergyUI:Notify("Message", duration, Color3, position)</code></pre></div>
+            <h3 style="margin-top:28px;">Config System</h3>
+            <p>Automatically saves position, accent, and all control states when ConfigFile is provided.</p>
+            <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>window:SaveConfig("custom.json")
+window:LoadConfig("custom.json")</code></pre></div>
+            <h3 style="margin-top:28px;">Programmatic Control Access</h3>
             <p>Every control with a Flag can be accessed later via window.Flags[flagName]</p>
         </div>
     </section>
 
-    <footer style="background:#050505; padding:60px 5%; text-align:center; border-top:1px solid #222; color:#555; font-size:14px;">
-        SynergyUI Documentation • Built as a single-file reference<br>
-        All code examples are production-ready and tested against the official library.
+    <footer>
+        SynergyUI Documentation • All code examples are production-ready and tested against the official library.
     </footer>
 
-    <div class="floating-next" onclick="nextSection()" title="Next Section">
-        →
-    </div>
+    <div class="floating-next" onclick="nextSection()" title="Next Section">→</div>
 
     <script>
         function createStars() {
-            const canvas = document.getElementById('stars-canvas')
-            const ctx = canvas.getContext('2d')
-            
+            const canvas = document.getElementById('stars-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
             function resize() {
-                canvas.width = window.innerWidth
-                canvas.height = window.innerHeight
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             }
-            window.addEventListener('resize', resize)
-            resize()
-            
-            let stars = []
-            for (let i = 0; i < 420; i++) {
+            window.addEventListener('resize', resize);
+            resize();
+            let stars = [];
+            for (let i = 0; i < 380; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 2.8 + 0.6,
+                    size: Math.random() * 2.5 + 0.6,
                     speed: Math.random() * 0.8 + 0.3
-                })
+                });
             }
-            
             function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height)
-                ctx.fillStyle = '#00ff64'
-                
+                if (!ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00ff64';
                 for (let star of stars) {
-                    const alpha = Math.sin(Date.now() / (300 + star.speed * 800)) * 0.5 + 0.6
-                    ctx.globalAlpha = alpha
-                    ctx.fillRect(star.x, star.y, star.size, star.size)
-                    
+                    const alpha = Math.sin(Date.now() / (300 + star.speed * 700)) * 0.5 + 0.6;
+                    ctx.globalAlpha = alpha;
+                    ctx.fillRect(star.x, star.y, star.size, star.size);
                     if (Math.random() > 0.97) {
-                        ctx.globalAlpha = 0.25
-                        ctx.fillRect(star.x - 1, star.y - 1, star.size + 2, star.size + 2)
+                        ctx.globalAlpha = 0.25;
+                        ctx.fillRect(star.x - 1, star.y - 1, star.size + 2, star.size + 2);
                     }
                 }
-                ctx.globalAlpha = 1
-                requestAnimationFrame(draw)
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(draw);
             }
-            draw()
+            draw();
         }
         
         function copyCode(btn) {
-            const pre = btn.parentElement.querySelector('pre')
-            const text = pre.textContent
+            const block = btn.closest('.code-block');
+            const pre = block ? block.querySelector('pre') : btn.parentElement.querySelector('pre');
+            if (!pre) return;
+            const text = pre.textContent;
             navigator.clipboard.writeText(text).then(() => {
-                const original = btn.textContent
-                btn.textContent = 'Copied!'
-                btn.style.background = '#00ff64'
-                btn.style.color = '#111'
+                const original = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#00ff64';
+                btn.style.color = '#111';
                 setTimeout(() => {
-                    btn.textContent = original
-                    btn.style.background = ''
-                    btn.style.color = ''
-                }, 1600)
-            })
+                    btn.textContent = original;
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 1500);
+            }).catch(() => {});
         }
         
         function copyHeroCode() {
-            const code = `local SynergyUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Synergy-Hub-Official/Scripts/refs/heads/main/SynergyUI.lua"))()`
+            const code = `local SynergyUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Synergy-Hub-Official/Scripts/refs/heads/main/SynergyUI.lua"))()`;
             navigator.clipboard.writeText(code).then(() => {
-                const btn = document.querySelector('#hero-code .copy-btn')
-                const original = btn.textContent
-                btn.textContent = 'Copied!'
-                setTimeout(() => btn.textContent = original, 1600)
-            })
+                const btn = document.querySelector('#hero-code .copy-btn');
+                if (btn) {
+                    const original = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => btn.textContent = original, 1500);
+                }
+            });
         }
         
         function copyFullExample() {
-            const pre = document.querySelector('#full-example pre')
-            navigator.clipboard.writeText(pre.textContent).then(() => {
-                const btns = document.querySelectorAll('.copy-btn')
-                for (let b of btns) {
-                    if (b.textContent === 'Copy Full Script') {
-                        const original = b.textContent
-                        b.textContent = 'Copied!'
-                        setTimeout(() => b.textContent = original, 1600)
-                        break
+            const pre = document.querySelector('#full-example pre');
+            if (pre) {
+                navigator.clipboard.writeText(pre.textContent).then(() => {
+                    const btns = document.querySelectorAll('.copy-btn');
+                    for (let b of btns) {
+                        if (b.textContent === 'Copy Full Script') {
+                            const original = b.textContent;
+                            b.textContent = 'Copied!';
+                            setTimeout(() => b.textContent = original, 1500);
+                            break;
+                        }
                     }
-                }
-            })
+                });
+            }
         }
         
-        let sectionOrder = [
-            '#getting-started',
-            '#full-example',
-            '#window',
-            '#tabs',
-            '#controls',
-            '#advanced'
-        ]
-        
+        const sectionOrder = ['#getting-started', '#full-example', '#window', '#tabs', '#controls', '#advanced'];
         function nextSection() {
-            const current = window.scrollY + window.innerHeight / 2
-            let nextIndex = 0
-            
+            const currentScroll = window.scrollY + window.innerHeight / 2;
+            let nextIndex = 0;
             for (let i = 0; i < sectionOrder.length; i++) {
-                const el = document.querySelector(sectionOrder[i])
-                if (el && el.getBoundingClientRect().top + window.scrollY > current) {
-                    nextIndex = i
-                    break
+                const el = document.querySelector(sectionOrder[i]);
+                if (el && el.getBoundingClientRect().top + window.scrollY > currentScroll) {
+                    nextIndex = i;
+                    break;
                 }
             }
-            
-            const nextEl = document.querySelector(sectionOrder[nextIndex])
-            if (nextEl) {
-                nextEl.scrollIntoView({ behavior: 'smooth' })
-            } else {
-                document.getElementById('home').scrollIntoView({ behavior: 'smooth' })
-            }
+            const nextEl = document.querySelector(sectionOrder[nextIndex]);
+            if (nextEl) nextEl.scrollIntoView({ behavior: 'smooth' });
+            else document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
         }
         
         function highlightNav() {
-            const links = document.querySelectorAll('nav a')
-            const sections = document.querySelectorAll('section[id]')
-            
+            const links = document.querySelectorAll('nav a');
+            const sections = document.querySelectorAll('section[id]');
             window.addEventListener('scroll', () => {
-                let current = ''
-                
+                let current = '';
                 sections.forEach(section => {
-                    const sectionTop = section.offsetTop
-                    if (scrollY >= sectionTop - 200) {
-                        current = '#' + section.getAttribute('id')
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 180) {
+                        current = '#' + section.getAttribute('id');
                     }
-                })
-                
+                });
                 links.forEach(link => {
-                    link.classList.remove('active')
-                    if (link.getAttribute('href') === current) {
-                        link.classList.add('active')
-                    }
-                })
-            })
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === current) link.classList.add('active');
+                });
+            });
         }
         
         window.onload = function() {
-            createStars()
-            highlightNav()
-        }
+            createStars();
+            highlightNav();
+            document.body.addEventListener('touchmove', function(e) {
+                if (e.targetTouches.length === 1 && Math.abs(e.targetTouches[0].clientX - (e.targetTouches[0].clientX)) > 10) {
+                    if (document.documentElement.scrollWidth <= window.innerWidth) e.preventDefault();
+                }
+            }, { passive: false });
+        };
     </script>
 </body>
 </html>
