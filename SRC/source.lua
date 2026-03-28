@@ -531,6 +531,7 @@ function ControlFactory:createDropdown(options)
                 updateButtonText()
                 isOpen = false
                 createTween(frame, 0.25, {Size = UDim2.new(1, 0, 0, self.theme.DropdownHeight)})
+                container.Size = UDim2.new(1, 0, 0, 0)
                 icon.Text = "▼"
                 pcall(options.Callback, opt)
                 self.save()
@@ -544,11 +545,14 @@ function ControlFactory:createDropdown(options)
     local connection = btn.MouseButton1Click:Connect(function()
         isOpen = not isOpen
         if isOpen then
-            local targetHeight = self.theme.DropdownHeight + math.min(#optionsList * self.theme.DropdownItemHeight + 8, 180)
+            local expandedHeight = math.min(#optionsList * self.theme.DropdownItemHeight + 8, 180)
+            local targetHeight = self.theme.DropdownHeight + expandedHeight
             createTween(frame, 0.25, {Size = UDim2.new(1, 0, 0, targetHeight)})
+            container.Size = UDim2.new(1, 0, 0, expandedHeight)
             icon.Text = "▲"
         else
             createTween(frame, 0.25, {Size = UDim2.new(1, 0, 0, self.theme.DropdownHeight)})
+            container.Size = UDim2.new(1, 0, 0, 0)
             icon.Text = "▼"
         end
     end)
@@ -717,11 +721,14 @@ function ControlFactory:createChecklist(options)
     local connection = btn.MouseButton1Click:Connect(function()
         isOpen = not isOpen
         if isOpen then
-            local target = self.theme.ChecklistHeight + math.min(#optionsList * self.theme.ChecklistItemHeight + 8, 220)
-            createTween(frame, 0.25, {Size = UDim2.new(1, 0, 0, target)})
+            local expandedHeight = math.min(#optionsList * self.theme.ChecklistItemHeight + 8, 220)
+            local targetHeight = self.theme.ChecklistHeight + expandedHeight
+            createTween(frame, 0.25, {Size = UDim2.new(1, 0, 0, targetHeight)})
+            container.Size = UDim2.new(1, 0, 0, expandedHeight)
             icon.Text = "▲"
         else
             createTween(frame, 0.25, {Size = UDim2.new(1, 0, 0, self.theme.ChecklistHeight)})
+            container.Size = UDim2.new(1, 0, 0, 0)
             icon.Text = "▼"
         end
     end)
