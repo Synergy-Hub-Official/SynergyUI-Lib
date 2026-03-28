@@ -361,7 +361,7 @@ function ControlFactory:createSlider(options)
     local inputBg = Instance.new("Frame")
     inputBg.Parent = frame
     inputBg.BackgroundColor3 = self.theme.ElementDark
-    inputBg.Position = UDim2.new(1, -68 - self.theme.PaddingHorizontal, 0, self.theme.PaddingVertical + self.theme.TextSizeNormal + 6) -- más abajo y alineado a la derecha del número
+    inputBg.Position = UDim2.new(1, -68 - self.theme.PaddingHorizontal, 0, self.theme.PaddingVertical + self.theme.TextSizeNormal + 6)
     inputBg.Size = UDim2.new(0, 60, 0, 22)
     addCorner(inputBg, 8)
     addStroke(inputBg, self.theme.StrokeColor)
@@ -1218,6 +1218,7 @@ function SynergyUI:CreateWindow(options)
     mainFrame.BorderSizePixel = 0
     mainFrame.Position = UDim2.new(0.5, -280, 0.5, -190)
     mainFrame.Size = UDim2.new(0, 560, 0, 380)
+    mainFrame.ClipsDescendants = true
     addCorner(mainFrame, window.Theme.CornerRadius)
     addStroke(mainFrame, window.Theme.Accent, 2, 0.4)
     window.MainFrame = mainFrame
