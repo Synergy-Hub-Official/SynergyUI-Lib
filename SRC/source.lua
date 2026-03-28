@@ -35,6 +35,15 @@ local function createTween(instance, duration, properties, style, direction)
     return tween
 end
 
+local function findInTable(tbl, value)
+    for i, v in ipairs(tbl) do
+        if v == value then
+            return i
+        end
+    end
+    return nil
+end
+
 local NotificationQueue = {}
 local function showNextNotification()
     if #NotificationQueue == 0 then return end
@@ -561,7 +570,7 @@ function ControlFactory:createDropdown(options)
     dropdown.SetOptions = function(_, newOpts)
         optionsList = newOpts
         rebuild()
-        if not table.find(optionsList, current) then
+        if not findInTable(optionsList, current) then
             current = ""
             updateButtonText()
             pcall(options.Callback, "")
@@ -569,7 +578,7 @@ function ControlFactory:createDropdown(options)
     end
 
     dropdown.SetValue = function(_, val)
-        if table.find(optionsList, val) or val == "" then
+        if findInTable(optionsList, val) or val == "" then
             current = val
             updateButtonText()
             pcall(options.Callback, val)
@@ -1161,7 +1170,7 @@ function ControlFactory:createRadioGroup(options)
 
     self.registerControl(flag,
         function() return selected end,
-        function(v) if table.find(options.Options, v) then update(v) end end,
+        function(v) if findInTable(options.Options, v) then update(v) end end,
         function(c)
             for _, btn in ipairs(radioButtons) do
                 if btn.Option == selected then
