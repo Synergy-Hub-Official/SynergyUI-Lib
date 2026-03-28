@@ -11,9 +11,7 @@ local TextService = game:GetService("TextService")
 local function getDefaultParent()
     if RunService:IsStudio() then
         local player = Players.LocalPlayer
-        if player then
-            return player:WaitForChild("PlayerGui")
-        end
+        if player then return player:WaitForChild("PlayerGui") end
     end
     return CoreGui
 end
@@ -55,7 +53,6 @@ local function addHoverEffect(button, originalColor, hoverColor, useScale)
         createTween(button, 0.18, {BackgroundColor3 = hoverColor})
         if scale then createTween(scale, 0.18, {Scale = 1.04}) end
     end)
-
     button.MouseLeave:Connect(function()
         createTween(button, 0.18, {BackgroundColor3 = originalColor})
         if scale then createTween(scale, 0.18, {Scale = 1}) end
@@ -141,9 +138,7 @@ end
 
 function SynergyUI:Notify(message, duration, typeColor, position)
     table.insert(NotificationQueue, {Message = message, Duration = duration, TypeColor = typeColor, Position = position})
-    if #NotificationQueue == 1 then
-        showNextNotification()
-    end
+    if #NotificationQueue == 1 then showNextNotification() end
 end
 
 local ControlFactory = {}
@@ -229,7 +224,10 @@ function ControlFactory:createButton(options)
         tipLabel.TextXAlignment = Enum.TextXAlignment.Left
 
         tooltip.Visible = false
-        local show = btn.MouseEnter:Connect(function() tooltip.Visible = true tooltip.Size = UDim2.new(0, TextService:GetTextSize(options.Tooltip, self.theme.TextSizeSmall, self.theme.Font, Vector2.new(9999, 9999)).X + 18, 0, 24) end)
+        local show = btn.MouseEnter:Connect(function()
+            tooltip.Visible = true
+            tooltip.Size = UDim2.new(0, TextService:GetTextSize(options.Tooltip, self.theme.TextSizeSmall, self.theme.Font, Vector2.new(9999, 9999)).X + 18, 0, 24)
+        end)
         local hide = btn.MouseLeave:Connect(function() tooltip.Visible = false end)
         table.insert(self.connections, show)
         table.insert(self.connections, hide)
@@ -264,13 +262,13 @@ function ControlFactory:createToggle(options)
     outer.Parent = frame
     outer.BackgroundColor3 = self.theme.ElementDark
     outer.Position = UDim2.new(1, -self.theme.ToggleWidth - self.theme.PaddingHorizontal, 0.5, -self.theme.ToggleHeight/2 + 1)
-    outer.Size = UDim2.new(0, self.theme.ToggleWidth, 0, self.theme.ToggleHeight - 4)
+    outer.Size = UDim2.new(0, self.theme.ToggleWidth, 0, self.theme.ToggleHeight - 8)
     addCorner(outer, 999)
 
     local inner = Instance.new("Frame")
     inner.Parent = outer
     inner.BackgroundColor3 = state and self.theme.Accent or self.theme.TextMuted
-    local innerSize = self.theme.ToggleHeight - 10
+    local innerSize = self.theme.ToggleHeight - 16
     inner.Position = state and UDim2.new(1, -innerSize - 4, 0.5, -innerSize/2) or UDim2.new(0, 4, 0.5, -innerSize/2)
     inner.Size = UDim2.new(0, innerSize, 0, innerSize)
     addCorner(inner, 999)
@@ -299,9 +297,7 @@ function ControlFactory:createToggle(options)
     self.registerControl(flag,
         function() return state end,
         function(v) update(v) end,
-        function(c)
-            if state then inner.BackgroundColor3 = c end
-        end
+        function(c) if state then inner.BackgroundColor3 = c end end
     )
 
     return frame, connection
@@ -344,7 +340,7 @@ function ControlFactory:createSlider(options)
     bg.Parent = frame
     bg.BackgroundColor3 = self.theme.ElementDark
     bg.Position = UDim2.new(0, self.theme.PaddingHorizontal, 0, self.theme.PaddingVertical + self.theme.TextSizeNormal + 8)
-    bg.Size = UDim2.new(1, -2 * self.theme.PaddingHorizontal - 70, 0, self.theme.SliderBarHeight)
+    bg.Size = UDim2.new(1, -2 * self.theme.PaddingHorizontal - 130, 0, self.theme.SliderBarHeight)
     addCorner(bg, self.theme.SliderBarHeight / 2)
     addStroke(bg, self.theme.StrokeColor, 1, 0.9)
 
@@ -365,8 +361,8 @@ function ControlFactory:createSlider(options)
     local inputBg = Instance.new("Frame")
     inputBg.Parent = frame
     inputBg.BackgroundColor3 = self.theme.ElementDark
-    inputBg.Position = UDim2.new(1, -68 - self.theme.PaddingHorizontal, 0, self.theme.PaddingVertical + self.theme.TextSizeNormal + 8)
-    inputBg.Size = UDim2.new(0, 60, 0, self.theme.SliderBarHeight + 4)
+    inputBg.Position = UDim2.new(1, -68 - self.theme.PaddingHorizontal, 0, self.theme.PaddingVertical + self.theme.TextSizeNormal + 6) -- más abajo y alineado a la derecha del número
+    inputBg.Size = UDim2.new(0, 60, 0, 22)
     addCorner(inputBg, 8)
     addStroke(inputBg, self.theme.StrokeColor)
 
@@ -529,9 +525,7 @@ function ControlFactory:createDropdown(options)
             optBtn.TextColor3 = self.theme.TextMuted
             optBtn.TextSize = self.theme.TextSizeSmall
             optBtn.TextXAlignment = Enum.TextXAlignment.Left
-
             addHoverEffect(optBtn, self.theme.ElementDark, self.theme.HoverColor, false)
-
             optBtn.MouseButton1Click:Connect(function()
                 current = opt
                 updateButtonText()
@@ -733,7 +727,11 @@ function ControlFactory:createChecklist(options)
     end)
 
     self.registerControl(flag,
-        function() return {} end,
+        function()
+            local result = {}
+            for k, v in pairs(selected) do if v then table.insert(result, k) end end
+            return result
+        end,
         function(v) selected = {}; for _,x in ipairs(v) do selected[x] = true end rebuild() end,
         function(c) container.ScrollBarImageColor3 = c countLabel.TextColor3 = c end
     )
@@ -1024,23 +1022,25 @@ function ControlFactory:createColorPicker(options)
                 local pos = math.clamp((inp.Position.X - sBg.AbsolutePosition.X) / sBg.AbsoluteSize.X, 0, 1)
                 sFill.Size = UDim2.new(pos, 0, 1, 0)
                 callback(pos)
+                update()
             end
         end)
         UserInputService.InputEnded:Connect(function(inp)
-            if (inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch) then dragging = false end
+            if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then dragging = false end
         end)
         UserInputService.InputChanged:Connect(function(inp)
             if dragging and (inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch) then
                 local pos = math.clamp((inp.Position.X - sBg.AbsolutePosition.X) / sBg.AbsoluteSize.X, 0, 1)
                 sFill.Size = UDim2.new(pos, 0, 1, 0)
                 callback(pos)
+                update()
             end
         end)
     end
 
-    makeSlider("R", 12, Color3.fromRGB(255, 80, 80), r, function(v) r = v update() end)
-    makeSlider("G", 48, Color3.fromRGB(80, 255, 80), g, function(v) g = v update() end)
-    makeSlider("B", 84, Color3.fromRGB(80, 150, 255), b, function(v) b = v update() end)
+    makeSlider("R", 12, Color3.fromRGB(255, 80, 80), r, function(v) r = v end)
+    makeSlider("G", 48, Color3.fromRGB(80, 255, 80), g, function(v) g = v end)
+    makeSlider("B", 84, Color3.fromRGB(80, 150, 255), b, function(v) b = v end)
 
     local isOpen = false
     local connection = btn.MouseButton1Click:Connect(function()
@@ -1181,8 +1181,8 @@ function SynergyUI:CreateWindow(options)
             TextSizeSmall = 13,
             LabelHeight = 24,
             ButtonHeight = 42,
-            ToggleHeight = 42,
-            ToggleWidth = 42,
+            ToggleHeight = 34,
+            ToggleWidth = 50,
             SliderHeight = 52,
             SliderBarHeight = 8,
             DropdownHeight = 42,
@@ -1298,12 +1298,13 @@ function SynergyUI:CreateWindow(options)
     resizeGrip.Name = "ResizeGrip"
     resizeGrip.Parent = mainFrame
     resizeGrip.BackgroundTransparency = 1
-    resizeGrip.Position = UDim2.new(1, -18, 1, -18)
-    resizeGrip.Size = UDim2.new(0, 18, 0, 18)
+    resizeGrip.Position = UDim2.new(1, -24, 1, -24)
+    resizeGrip.Size = UDim2.new(0, 20, 0, 20)
     resizeGrip.Text = "◢"
     resizeGrip.TextColor3 = window.Theme.TextMuted
-    resizeGrip.TextSize = 14
+    resizeGrip.TextSize = 16
     resizeGrip.ZIndex = 20
+    addCorner(resizeGrip, 4)
 
     local function addConnection(conn)
         table.insert(window.Connections, conn)
@@ -1327,6 +1328,12 @@ function SynergyUI:CreateWindow(options)
         end
     end))
 
+    addConnection(UserInputService.InputEnded:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+            dragging = false
+        end
+    end))
+
     local resizing = false
     local resizeStart, startSize
     addConnection(resizeGrip.InputBegan:Connect(function(input)
@@ -1346,12 +1353,22 @@ function SynergyUI:CreateWindow(options)
         end
     end))
 
+    addConnection(UserInputService.InputEnded:Connect(function(input)
+        if resizing and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+            resizing = false
+        end
+    end))
+
     addConnection(minBtn.MouseButton1Click:Connect(function()
         window.IsMinimized = not window.IsMinimized
         if window.IsMinimized then
             createTween(mainFrame, 0.35, {Size = UDim2.new(0, mainFrame.Size.X.Offset, 0, 42)})
+            sidebar.Visible = false
+            contentArea.Visible = false
         else
             createTween(mainFrame, 0.35, {Size = UDim2.new(0, mainFrame.Size.X.Offset, 0, 380)})
+            sidebar.Visible = true
+            contentArea.Visible = true
         end
     end))
 
@@ -1378,9 +1395,7 @@ function SynergyUI:CreateWindow(options)
             controls = {}
         }
         for _, control in ipairs(window.Controls) do
-            if control.Save then
-                config.controls[control.Id] = control.Save()
-            end
+            if control.Save then config.controls[control.Id] = control.Save() end
         end
         if type(writefile) == "function" then
             writefile(window.ConfigFile, HttpService:JSONEncode(config))
@@ -1430,9 +1445,7 @@ function SynergyUI:CreateWindow(options)
         mainFrame:FindFirstChild("UIStroke").Color = color
         titleLabel.TextColor3 = color
         for _, tab in ipairs(window.Tabs) do
-            if tab.Button.TextColor3 ~= window.Theme.TextMuted then
-                tab.Button.TextColor3 = color
-            end
+            if tab.Button.TextColor3 ~= window.Theme.TextMuted then tab.Button.TextColor3 = color end
         end
         for _, control in ipairs(window.Controls) do
             if control.UpdateTheme then control.UpdateTheme(color) end
@@ -1522,12 +1535,7 @@ function SynergyUI:CreateWindow(options)
         local controlFactory = ControlFactory:new(scrollFrame, window.Theme, saveConfig, loadConfig, window.SetAccent)
         controlFactory.controls = window.Flags
         controlFactory.registerControl = function(id, saveFunc, loadFunc, themeFunc)
-            table.insert(window.Controls, {
-                Id = id,
-                Save = saveFunc,
-                Load = loadFunc,
-                UpdateTheme = themeFunc
-            })
+            table.insert(window.Controls, {Id = id, Save = saveFunc, Load = loadFunc, UpdateTheme = themeFunc})
         end
         controlFactory.connections = window.Connections
 
