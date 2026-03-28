@@ -155,6 +155,7 @@ function ControlFactory:new(parent, theme, saveCallback, loadCallback, updateThe
     obj.save = saveCallback
     obj.load = loadCallback
     obj.updateTheme = updateThemeCallback
+    setmetatable(obj, { __index = ControlFactory })
     return obj
 end
 
@@ -1316,7 +1317,7 @@ function SynergyUI:CreateWindow(options)
     resizeGrip.BackgroundTransparency = 1
     resizeGrip.Position = UDim2.new(1, -15, 1, -15)
     resizeGrip.Size = UDim2.new(0, 15, 0, 15)
-    resizeGrip.Text = "â¢"
+    resizeGrip.Text = "◢"
     resizeGrip.TextColor3 = window.Theme.TextMuted
     resizeGrip.TextSize = 10
     resizeGrip.ZIndex = 20
