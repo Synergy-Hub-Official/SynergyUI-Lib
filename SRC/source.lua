@@ -1210,6 +1210,8 @@ function SynergyUI:CreateWindow(options)
         IsMinimized = false
     }
 
+    local strokeThickness = 2
+
     local gui = Instance.new("ScreenGui")
     gui.Name = "SynergyUI_" .. HttpService:GenerateGUID(false)
     gui.Parent = options.Parent or getDefaultParent()
@@ -1227,7 +1229,7 @@ function SynergyUI:CreateWindow(options)
     mainFrame.Size = UDim2.new(0, 560, 0, 380)
     mainFrame.ClipsDescendants = true
     addCorner(mainFrame, window.Theme.CornerRadius)
-    addStroke(mainFrame, window.Theme.Accent, 2, 0.4)
+    addStroke(mainFrame, window.Theme.Accent, strokeThickness, 0.4)
     window.MainFrame = mainFrame
 
     local topBar = Instance.new("Frame")
@@ -1285,7 +1287,7 @@ function SynergyUI:CreateWindow(options)
     sidebar.BackgroundColor3 = window.Theme.Sidebar
     sidebar.BorderSizePixel = 0
     sidebar.Position = UDim2.new(0, 0, 0, 42)
-    sidebar.Size = UDim2.new(0, 150, 1, -42)
+    sidebar.Size = UDim2.new(0, 150, 1, -42 - strokeThickness)
     sidebar.ZIndex = 5
 
     local sidebarLayout = Instance.new("UIListLayout")
@@ -1299,14 +1301,14 @@ function SynergyUI:CreateWindow(options)
     contentArea.BackgroundColor3 = window.Theme.Background
     contentArea.BorderSizePixel = 0
     contentArea.Position = UDim2.new(0, 150, 0, 42)
-    contentArea.Size = UDim2.new(1, -150, 1, -42)
+    contentArea.Size = UDim2.new(1, -150 - strokeThickness, 1, -42 - strokeThickness)
     contentArea.ZIndex = 1
 
     local resizeGrip = Instance.new("TextButton")
     resizeGrip.Name = "ResizeGrip"
     resizeGrip.Parent = mainFrame
     resizeGrip.BackgroundTransparency = 1
-    resizeGrip.Position = UDim2.new(1, -24, 1, -24)
+    resizeGrip.Position = UDim2.new(1, -24 - strokeThickness, 1, -24 - strokeThickness)
     resizeGrip.Size = UDim2.new(0, 20, 0, 20)
     resizeGrip.Text = "◢"
     resizeGrip.TextColor3 = window.Theme.TextMuted
