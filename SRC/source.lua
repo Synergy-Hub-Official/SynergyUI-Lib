@@ -1289,6 +1289,8 @@ function SynergyUI:CreateWindow(options)
     sidebar.Position = UDim2.new(0, 0, 0, 42)
     sidebar.Size = UDim2.new(0, 150, 1, -42 - strokeThickness)
     sidebar.ZIndex = 5
+    addCorner(sidebar, window.Theme.CornerRadius)
+    sidebar.ClipsDescendants = true
 
     local sidebarLayout = Instance.new("UIListLayout")
     sidebarLayout.Parent = sidebar
@@ -1303,6 +1305,8 @@ function SynergyUI:CreateWindow(options)
     contentArea.Position = UDim2.new(0, 150, 0, 42)
     contentArea.Size = UDim2.new(1, -150 - strokeThickness, 1, -42 - strokeThickness)
     contentArea.ZIndex = 1
+    addCorner(contentArea, window.Theme.CornerRadius)
+    contentArea.ClipsDescendants = true
 
     local resizeGrip = Instance.new("TextButton")
     resizeGrip.Name = "ResizeGrip"
