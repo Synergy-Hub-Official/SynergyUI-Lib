@@ -570,7 +570,7 @@ local settings = window:CreateTab("Settings", "rbxassetid://123456789")  -- opti
                 <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
                 <tr><td>Name</td><td>string</td><td>Label text</td></tr>
                 <tr><td>CurrentValue</td><td>bool</td><td>Initial state (default false)</td></tr>
-                <tr><td>Flag</td><td>string</td><td>Unique identifier for saving</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Unique identifier for saving (optional, defaults to Name)</td></tr>
                 <tr><td>Callback</td><td>function</td><td>Receives new state</td></tr>
                 <tr><td>Tooltip</td><td>string</td><td>Hover tooltip</td></tr>
                 </tbody></table></div>
@@ -589,7 +589,7 @@ local settings = window:CreateTab("Settings", "rbxassetid://123456789")  -- opti
                 <tr><td>Range</td><td>{number, number}</td><td>Min and max values</td></tr>
                 <tr><td>Increment</td><td>number</td><td>Step value (default 1)</td></tr>
                 <tr><td>CurrentValue</td><td>number</td><td>Initial value</td></tr>
-                <tr><td>Flag</td><td>string</td><td>Auto‑save identifier</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Auto‑save identifier (optional, defaults to Name)</td></tr>
                 <tr><td>Callback</td><td>function</td><td>Receives current value</td></tr>
                 </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">main:CreateSlider({
@@ -617,6 +617,13 @@ local settings = window:CreateTab("Settings", "rbxassetid://123456789")  -- opti
                 
                 <!-- Dropdown -->
                 <div class="card"><h3>Dropdown <span class="badge">Flag</span></h3><p>Selectable list. Returns object with <code>SetOptions/SetValue</code>.</p>
+                <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+                <tr><td>Name</td><td>string</td><td>Label text</td></tr>
+                <tr><td>Options</td><td>{string}</td><td>List of choices</td></tr>
+                <tr><td>CurrentOption</td><td>string</td><td>Initial selection (default first)</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Identifier (optional, defaults to Name)</td></tr>
+                <tr><td>Callback</td><td>function</td><td>Receives selected option</td></tr>
+                </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">local dd = main:CreateDropdown({
     Name = "Mode",
     Options = {"Normal", "Aggressive"},
@@ -628,6 +635,13 @@ dd:SetOptions({"Normal", "Tactical", "Fast"})</code></pre></div>
                 
                 <!-- Checklist -->
                 <div class="card"><h3>Checklist <span class="badge">Flag</span></h3><p>Multi‑selection list. Methods <code>SetSelected/GetSelected</code>.</p>
+                <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+                <tr><td>Name</td><td>string</td><td>Label text</td></tr>
+                <tr><td>Options</td><td>{string}</td><td>List of options</td></tr>
+                <tr><td>CurrentSelected</td><td>{string}</td><td>Initially selected options</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Identifier (optional, defaults to Name)</td></tr>
+                <tr><td>Callback</td><td>function</td><td>Receives table of selected options</td></tr>
+                </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">local cl = main:CreateChecklist({
     Name = "Features",
     Options = {"Aimbot", "ESP"},
@@ -638,16 +652,30 @@ cl:SetSelected({"ESP"})</code></pre></div>
                 </div>
                 
                 <!-- TextInput -->
-                <div class="card"><h3>TextInput</h3><p>Free text field.</p>
+                <div class="card"><h3>TextInput</h3><p>Free text field with placeholder.</p>
+                <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+                <tr><td>Name</td><td>string</td><td>Label text</td></tr>
+                <tr><td>CurrentText</td><td>string</td><td>Initial text (default "")</td></tr>
+                <tr><td>Placeholder</td><td>string</td><td>Placeholder text when empty</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Identifier (optional, defaults to Name)</td></tr>
+                <tr><td>Callback</td><td>function</td><td>Receives current text on focus lost</td></tr>
+                </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">main:CreateTextInput({
     Name = "Message",
     CurrentText = "",
+    Placeholder = "Enter your message...",
     Callback = function(text) print(text) end
 })</code></pre></div>
                 </div>
                 
                 <!-- NumberInput -->
                 <div class="card"><h3>NumberInput</h3><p>Numeric input field with validation.</p>
+                <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+                <tr><td>Name</td><td>string</td><td>Label text</td></tr>
+                <tr><td>CurrentValue</td><td>number</td><td>Initial number (default 0)</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Identifier (optional, defaults to Name)</td></tr>
+                <tr><td>Callback</td><td>function</td><td>Receives current number on focus lost</td></tr>
+                </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">main:CreateNumberInput({
     Name = "Amount",
     CurrentValue = 10,
@@ -657,6 +685,12 @@ cl:SetSelected({"ESP"})</code></pre></div>
                 
                 <!-- Keybind -->
                 <div class="card"><h3>Keybind <span class="badge">Flag</span></h3><p>Key capture with press detection.</p>
+                <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+                <tr><td>Name</td><td>string</td><td>Label text</td></tr>
+                <tr><td>CurrentKeybind</td><td>string</td><td>Initial key name (default "None")</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Identifier (optional, defaults to Name)</td></tr>
+                <tr><td>Callback</td><td>function</td><td>Receives new key when set, and also triggered on press</td></tr>
+                </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">main:CreateKeybind({
     Name = "Ultimate",
     CurrentKeybind = "F",
@@ -667,6 +701,12 @@ cl:SetSelected({"ESP"})</code></pre></div>
                 
                 <!-- ColorPicker -->
                 <div class="card"><h3>ColorPicker</h3><p>RGB color selector.</p>
+                <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+                <tr><td>Name</td><td>string</td><td>Label text</td></tr>
+                <tr><td>Color</td><td>Color3</td><td>Initial color (default #00aaee)</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Identifier (optional, defaults to Name)</td></tr>
+                <tr><td>Callback</td><td>function</td><td>Receives Color3 on change</td></tr>
+                </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">main:CreateColorPicker({
     Name = "ESP Color",
     Color = Color3.fromRGB(0,255,0),
@@ -676,6 +716,13 @@ cl:SetSelected({"ESP"})</code></pre></div>
                 
                 <!-- RadioGroup -->
                 <div class="card"><h3>RadioGroup</h3><p>Exclusive option buttons.</p>
+                <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+                <tr><td>Name</td><td>string</td><td>Label text</td></tr>
+                <tr><td>Options</td><td>{string}</td><td>List of choices</td></tr>
+                <tr><td>CurrentValue</td><td>string</td><td>Initially selected (default first)</td></tr>
+                <tr><td>Flag</td><td>string</td><td>Identifier (optional, defaults to Name)</td></tr>
+                <tr><td>Callback</td><td>function</td><td>Receives selected option</td></tr>
+                </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">main:CreateRadioGroup({
     Name = "Theme",
     Options = {"Dark", "Light"},
@@ -686,6 +733,11 @@ cl:SetSelected({"ESP"})</code></pre></div>
                 
                 <!-- Paragraph -->
                 <div class="card"><h3>Paragraph</h3><p>Rich text with optional image.</p>
+                <div class="param-table"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+                <tr><td>Title</td><td>string</td><td>Heading text</td></tr>
+                <tr><td>Content</td><td>string</td><td>Body text</td></tr>
+                <tr><td>Image</td><td>string</td><td>Image URL (optional)</td></tr>
+                </tbody></table></div>
                 <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="language-lua">main:CreateParagraph({
     Title = "Info",
     Content = "Complete documentation",
@@ -764,6 +816,7 @@ local checklist = main:CreateChecklist({
 main:CreateTextInput({
     Name = "Custom Message",
     CurrentText = "Hello",
+    Placeholder = "Type something...",
     Callback = function(text) print("[TextInput] Text =", text) end
 })
 
