@@ -706,7 +706,7 @@ main:CreateLabel("Some info text")</code></pre></div>
             <div class="example-container">
                 <div class="code-block" style="max-height:680px; overflow:auto;">
                     <button class="copy-btn" onclick="copyFullExample()" style="float: right;">Copy Full Script</button>
-                    <pre><code class="language-lua">-- SynergyUI Advanced Demo – Showcases every control with flags and programmatic access
+                    <pre><code class="language-lua">-- SynergyUI Advanced Demo – Completamente funcional con flags
 local SynergyUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Synergy-Hub-Official/SynergyUI-Lib/refs/heads/main/SRC/source.lua"))()
 
 local window = SynergyUI:CreateWindow({
@@ -717,7 +717,6 @@ local window = SynergyUI:CreateWindow({
     CloseOnEscape = true
 })
 
--- Create two tabs
 local main = window:CreateTab("Controls")
 local advanced = window:CreateTab("Advanced")
 
@@ -733,7 +732,9 @@ local toggle = main:CreateToggle({
 
 main:CreateButton({
     Name = "Notify Me",
-    Callback = function() SynergyUI:Notify("Button clicked!", 2, Color3.fromRGB(0,255,100)) end
+    Callback = function()
+        SynergyUI:Notify("Button clicked!", 2, Color3.fromRGB(0,255,100))
+    end
 })
 
 main:CreateSlider({
@@ -795,22 +796,24 @@ main:CreateRadioGroup({
 main:CreateSeparator()
 main:CreateParagraph({
     Title = "Information",
-    Content = "This is a complete demo of SynergyUI. All controls support flags, auto-save, and programmatic access.",
-    Image = "rbxassetid://123456789"  -- placeholder
+    Content = "This demo now works with programmatic flags!",
+    Image = "rbxassetid://123456789"
 })
 
 -- ========== ADVANCED TAB ==========
-advanced:CreateSection("Programmatic Control")
-advanced:CreateLabel("Use window.Flags to get/set values")
+advanced:CreateSection("Programmatic Control (Flags)")
+advanced:CreateLabel("All flags now have GetValue() and SetValue()")
 
 advanced:CreateButton({
     Name = "Show Current Flags",
     Callback = function()
-        local msg = string.format("Master: %s\nVolume: %s\nGameMode: %s\nFeatures: %s",
+        local msg = string.format(
+            "Master: %s\nVolume: %s\nGameMode: %s\nFeatures: %s\nUltKey: %s",
             tostring(window.Flags.Master:GetValue()),
             tostring(window.Flags.Volume:GetValue()),
             window.Flags.GameMode:GetValue(),
-            table.concat(window.Flags.Features:GetValue(), ", ")
+            table.concat(window.Flags.Features:GetValue(), ", "),
+            window.Flags.UltKey:GetValue()
         )
         SynergyUI:Notify(msg, 4, Color3.fromRGB(0,255,100))
     end
@@ -875,8 +878,7 @@ advanced:CreateButton({
     end
 })
 
--- Notify that everything is ready
-SynergyUI:Notify("SynergyUI Demo Loaded | Press RightShift to toggle", 5, Color3.fromRGB(0,255,100))</code></pre>
+SynergyUI:Notify("SynergyUI Demo (Fixed) | Press RightShift to toggle", 5, Color3.fromRGB(0,255,100))</code></pre>
                 </div>
             </div>
         </section>
