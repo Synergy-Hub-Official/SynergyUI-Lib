@@ -302,7 +302,7 @@ function ControlFactory:createToggle(options)
     self.registerControl(flag,
         function() return state end,
         function(v) update(v) end,
-        function(c) if state then inner.BackgroundColor3 = c end end
+        function(c) if state then inner.BackgroundColor3 = c end
     )
 
     return frame, connection
@@ -1384,7 +1384,7 @@ function SynergyUI:CreateWindow(options)
         createTween(closeBtn, 0.15, {BackgroundTransparency = 0.72})
     end)
 
-    local sidebar = Instance.new("Frame")
+    local sidebar = Instance.new("ScrollingFrame")
     sidebar.Name = "Sidebar"
     sidebar.Parent = mainFrame
     sidebar.BackgroundColor3 = window.Theme.Sidebar
@@ -1394,6 +1394,8 @@ function SynergyUI:CreateWindow(options)
     sidebar.ZIndex = 5
     addCorner(sidebar, window.Theme.CornerRadius)
     sidebar.ClipsDescendants = true
+    sidebar.ScrollBarThickness = 5
+    sidebar.ScrollBarImageColor3 = window.Theme.Accent
 
     local sidebarLayout = Instance.new("UIListLayout")
     sidebarLayout.Parent = sidebar
@@ -1403,6 +1405,12 @@ function SynergyUI:CreateWindow(options)
     local sidebarPad = Instance.new("UIPadding")
     sidebarPad.Parent = sidebar
     sidebarPad.PaddingTop = UDim.new(0, 6)
+
+    local function updateSidebarCanvas()
+        sidebar.CanvasSize = UDim2.new(0, 0, 0, sidebarLayout.AbsoluteContentSize.Y + 6)
+    end
+    sidebarLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSidebarCanvas)
+    updateSidebarCanvas()
 
     local contentArea = Instance.new("Frame")
     contentArea.Name = "ContentArea"
