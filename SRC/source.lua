@@ -1692,7 +1692,7 @@ function SynergyUI:CreateWindow(options)
             iconLabel.Size = UDim2.new(0, 20, 0, 20)
             iconLabel.Image = iconAsset
             iconLabel.ImageColor3 = window.Theme.TextMuted
-            tabBtn.Text = "          " .. name
+            tabBtn.Text = "                     " .. name
         else
             tabBtn.TextXAlignment = Enum.TextXAlignment.Center
             tabBtn.Position = UDim2.new(0, 0, 0, 0)
