@@ -1670,10 +1670,15 @@ function SynergyUI:CreateWindow(options)
         tabBtn.BorderSizePixel = 0
         tabBtn.Size = UDim2.new(1, 0, 0, 42)
         tabBtn.Font = window.Theme.Font
+        tabBtn.Text = name
         tabBtn.TextColor3 = window.Theme.TextMuted
         tabBtn.TextSize = 14
         tabBtn.TextXAlignment = Enum.TextXAlignment.Left
         tabBtn.Position = UDim2.new(0, window.Theme.PaddingHorizontal + 10, 0, 0)
+
+        local textPadding = Instance.new("UIPadding")
+        textPadding.Parent = tabBtn
+        textPadding.PaddingLeft = UDim.new(0, 44)
 
         local activeIndicator = Instance.new("Frame")
         activeIndicator.Parent = tabBtn
@@ -1692,7 +1697,7 @@ function SynergyUI:CreateWindow(options)
             iconLabel.Size = UDim2.new(0, 20, 0, 20)
             iconLabel.Image = iconAsset
             iconLabel.ImageColor3 = window.Theme.TextMuted
-            tabBtn.Text = "                     " .. name
+            tabBtn.Text = name
         else
             tabBtn.TextXAlignment = Enum.TextXAlignment.Center
             tabBtn.Position = UDim2.new(0, 0, 0, 0)
