@@ -171,12 +171,10 @@ function SynergyUI:Notify(message, duration, typeColor, position)
 end
 
 local ControlFactory = {}
-function ControlFactory:new(parent, theme, saveCallback, loadCallback, updateThemeCallback)
+function ControlFactory:new(parent, theme, updateThemeCallback)
     local obj = {}
     obj.parent = parent
     obj.theme = theme
-    obj.save = saveCallback
-    obj.load = loadCallback
     obj.updateTheme = updateThemeCallback
     obj.controls = {}
     obj.connections = {}
@@ -316,7 +314,6 @@ function ControlFactory:createToggle(options)
         })
         label.TextColor3 = state and self.theme.Accent or self.theme.Text
         pcall(options.Callback, state)
-        self.save()
     end
 
     local flagObj = {
@@ -327,12 +324,6 @@ function ControlFactory:createToggle(options)
 
     local connection = btn.MouseButton1Click:Connect(function() update(not state) end)
     if state then pcall(options.Callback, state) end
-
-    self.registerControl(flag,
-        function() return state end,
-        function(v) update(v) end,
-        function(c) if state then inner.BackgroundColor3 = c end end
-    )
 
     return frame, connection
 end
@@ -444,7 +435,6 @@ function ControlFactory:createSlider(options)
 
     local connection2 = UserInputService.InputEnded:Connect(function(input)
         if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and dragging then
-            self.save()
             dragging = false
         end
     end)
@@ -465,7 +455,6 @@ function ControlFactory:createSlider(options)
             valLabel.Text = tostring(val)
             fill.Size = UDim2.new((val - options.Range[1]) / (options.Range[2] - options.Range[1]), 0, 1, 0)
             pcall(options.Callback, val)
-            self.save()
         else
             numInput.Text = tostring(val)
         end
@@ -483,20 +472,9 @@ function ControlFactory:createSlider(options)
             numInput.Text = tostring(v)
             fill.Size = UDim2.new((v - options.Range[1]) / (options.Range[2] - options.Range[1]), 0, 1, 0)
             pcall(options.Callback, v)
-            self.save()
         end
     }
     self.controls[flag] = flagObj
-
-    self.registerControl(flag,
-        function() return val end,
-        function(v) flagObj.SetValue(v) end,
-        function(c)
-            fill.BackgroundColor3 = c
-            thumb.BackgroundColor3 = c
-            valLabel.TextColor3 = c
-        end
-    )
 
     return frame, {connection1, connection2, connection3, connection4}
 end
@@ -580,7 +558,6 @@ function ControlFactory:createDropdown(options)
                 container.Size = UDim2.new(1, 0, 0, 0)
                 icon.Text = "v"
                 pcall(options.Callback, opt)
-                self.save()
             end)
             table.insert(optionButtons, optBtn)
         end
@@ -610,7 +587,6 @@ function ControlFactory:createDropdown(options)
                 current = v
                 updateButtonText()
                 pcall(options.Callback, v)
-                self.save()
             end
         end,
         SetOptions = function(_, newOpts)
@@ -624,12 +600,6 @@ function ControlFactory:createDropdown(options)
         end
     }
     self.controls[flag] = flagObj
-
-    self.registerControl(flag,
-        function() return current end,
-        function(v) flagObj.SetValue(v) end,
-        function(c) container.ScrollBarImageColor3 = c end
-    )
 
     return flagObj, connection
 end
@@ -702,7 +672,6 @@ function ControlFactory:createChecklist(options)
         for _, v in pairs(selected) do if v then count = count + 1 end end
         countLabel.Text = count .. " selected"
         pcall(options.Callback, selected)
-        self.save()
     end
 
     local function rebuild()
@@ -788,7 +757,6 @@ function ControlFactory:createChecklist(options)
             selected = {}
             for _, x in ipairs(tbl) do selected[x] = true end
             rebuild()
-            self.save()
         end,
         SetOptions = function(_, newOpts)
             optionsList = newOpts
@@ -807,12 +775,6 @@ function ControlFactory:createChecklist(options)
         end
     }
     self.controls[flag] = flagObj
-
-    self.registerControl(flag,
-        function() return flagObj.GetValue() end,
-        function(v) flagObj.SetValue(v) end,
-        function(c) container.ScrollBarImageColor3 = c countLabel.TextColor3 = c end
-    )
 
     return flagObj, connection
 end
@@ -861,7 +823,6 @@ function ControlFactory:createTextInput(options)
 
     local connection = input.FocusLost:Connect(function()
         pcall(options.Callback, input.Text)
-        self.save()
     end)
 
     local flagObj = {
@@ -870,11 +831,6 @@ function ControlFactory:createTextInput(options)
     }
     self.controls[flag] = flagObj
 
-    self.registerControl(flag,
-        function() return input.Text end,
-        function(v) input.Text = v end,
-        function() end
-    )
     return flagObj, connection
 end
 
@@ -929,7 +885,6 @@ function ControlFactory:createNumberInput(options)
         if num then
             currentVal = num
             pcall(options.Callback, currentVal)
-            self.save()
         else
             input.Text = tostring(currentVal)
         end
@@ -937,15 +892,10 @@ function ControlFactory:createNumberInput(options)
 
     local flagObj = {
         GetValue = function() return currentVal end,
-        SetValue = function(_, v) currentVal = tonumber(v) or 0; input.Text = tostring(currentVal); pcall(options.Callback, currentVal); self.save() end
+        SetValue = function(_, v) currentVal = tonumber(v) or 0; input.Text = tostring(currentVal); pcall(options.Callback, currentVal) end
     }
     self.controls[flag] = flagObj
 
-    self.registerControl(flag,
-        function() return currentVal end,
-        function(v) flagObj.SetValue(v) end,
-        function() end
-    )
     return flagObj, connection
 end
 
@@ -998,7 +948,6 @@ function ControlFactory:createKeybind(options)
                 bindBtn.Text = current
                 binding = false
                 pcall(options.Callback, current)
-                self.save()
             end
         elseif not gp then
             local inputName = input.KeyCode.Name ~= "Unknown" and input.KeyCode.Name or input.UserInputType.Name
@@ -1010,15 +959,10 @@ function ControlFactory:createKeybind(options)
 
     local flagObj = {
         GetValue = function() return current end,
-        SetValue = function(_, v) current = v; bindBtn.Text = v; pcall(options.Callback, v); self.save() end
+        SetValue = function(_, v) current = v; bindBtn.Text = v; pcall(options.Callback, v) end
     }
     self.controls[flag] = flagObj
 
-    self.registerControl(flag,
-        function() return current end,
-        function(v) flagObj.SetValue(v) end,
-        function(c) bindBtn.TextColor3 = c end
-    )
     return flagObj, {connection1, connection2}
 end
 
@@ -1071,7 +1015,6 @@ function ControlFactory:createColorPicker(options)
         local c = Color3.new(r, g, b)
         preview.BackgroundColor3 = c
         pcall(options.Callback, c)
-        self.save()
     end
 
     local function makeSlider(name, yPos, tint, initVal, callback)
@@ -1154,11 +1097,6 @@ function ControlFactory:createColorPicker(options)
     }
     self.controls[flag] = flagObj
 
-    self.registerControl(flag,
-        function() return {r, g, b} end,
-        function(v) r, g, b = v[1], v[2], v[3]; update() end,
-        function() end
-    )
     return flagObj, connection
 end
 
@@ -1232,7 +1170,6 @@ function ControlFactory:createRadioGroup(options)
                     rb.Inner.BackgroundColor3 = (rb.Option == selected) and self.theme.Accent or Color3.fromRGB(60,60,60)
                 end
                 pcall(options.Callback, selected)
-                self.save()
             end
         end)
 
@@ -1248,21 +1185,11 @@ function ControlFactory:createRadioGroup(options)
                     rb.Inner.BackgroundColor3 = (rb.Option == selected) and self.theme.Accent or Color3.fromRGB(60,60,60)
                 end
                 pcall(options.Callback, selected)
-                self.save()
             end
         end
     }
     self.controls[flag] = flagObj
 
-    self.registerControl(flag,
-        function() return selected end,
-        function(v) flagObj.SetValue(v) end,
-        function(c)
-            for _, rb in ipairs(radioButtons) do
-                if rb.Option == selected then rb.Inner.BackgroundColor3 = c end
-            end
-        end
-    )
     return flagObj, nil
 end
 
@@ -1271,10 +1198,8 @@ function SynergyUI:CreateWindow(options)
     local window = {
         Flags = {},
         Tabs = {},
-        Controls = {},
         Connections = {},
         CurrentTab = nil,
-        ConfigFile = options.ConfigFile or "",
         Theme = {
             Accent = options.AccentColor or Color3.fromRGB(0, 170, 255),
             Background = Color3.fromRGB(8, 8, 8),
@@ -1580,60 +1505,6 @@ function SynergyUI:CreateWindow(options)
         end
     end
 
-    local function saveConfig()
-        if window.ConfigFile == "" then return end
-        local config = {
-            position = {mainFrame.Position.X.Scale, mainFrame.Position.X.Offset, mainFrame.Position.Y.Scale, mainFrame.Position.Y.Offset},
-            size = {mainFrame.Size.X.Scale, mainFrame.Size.X.Offset, mainFrame.Size.Y.Scale, mainFrame.Size.Y.Offset},
-            accent = {window.Theme.Accent.R, window.Theme.Accent.G, window.Theme.Accent.B},
-            controls = {}
-        }
-        for _, control in ipairs(window.Controls) do
-            if control.Save then config.controls[control.Id] = control.Save() end
-        end
-        if type(writefile) == "function" then
-            writefile(window.ConfigFile, HttpService:JSONEncode(config))
-        end
-    end
-
-    local function loadConfig()
-        if window.ConfigFile == "" then return end
-        if type(readfile) == "function" then
-            local success, res = pcall(readfile, window.ConfigFile)
-            if success then
-                local s, decoded = pcall(HttpService.JSONDecode, HttpService, res)
-                if s and decoded then
-                    if decoded.position then
-                        mainFrame.Position = UDim2.new(decoded.position[1], decoded.position[2], decoded.position[3], decoded.position[4])
-                    end
-                    if decoded.size then
-                        mainFrame.Size = UDim2.new(decoded.size[1], decoded.size[2], decoded.size[3], decoded.size[4])
-                    end
-                    if decoded.accent then
-                        window:SetAccent(Color3.new(decoded.accent[1], decoded.accent[2], decoded.accent[3]))
-                    end
-                    if decoded.controls then
-                        for _, control in ipairs(window.Controls) do
-                            if control.Load and decoded.controls[control.Id] ~= nil then
-                                control.Load(decoded.controls[control.Id])
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    function window:SaveConfig(filename)
-        if filename then window.ConfigFile = filename end
-        saveConfig()
-    end
-
-    function window:LoadConfig(filename)
-        if filename then window.ConfigFile = filename end
-        loadConfig()
-    end
-
     function window:SetAccent(color)
         window.Theme.Accent = color
         mainFrame:FindFirstChild("UIStroke").Color = color
@@ -1776,11 +1647,8 @@ function SynergyUI:CreateWindow(options)
         end))
 
         local elements = {}
-        local controlFactory = ControlFactory:new(scrollFrame, window.Theme, saveConfig, loadConfig, window.SetAccent)
+        local controlFactory = ControlFactory:new(scrollFrame, window.Theme, window.SetAccent)
         controlFactory.controls = window.Flags
-        controlFactory.registerControl = function(id, saveFunc, loadFunc, themeFunc)
-            table.insert(window.Controls, {Id = id, Save = saveFunc, Load = loadFunc, UpdateTheme = themeFunc})
-        end
         controlFactory.connections = window.Connections
 
         elements.CreateLabel = function(_, text) return controlFactory:createLabel(text) end
@@ -1887,7 +1755,6 @@ function SynergyUI:CreateWindow(options)
         return elements
     end
 
-    if window.ConfigFile ~= "" then loadConfig() end
     return window
 end
 
